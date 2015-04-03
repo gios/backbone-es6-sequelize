@@ -1,0 +1,113 @@
+<head>
+    <title>intime-project</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">{{> loginButtons}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-xs-6 col-sm-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">Not confirm request</div>
+                <div class="panel-body">
+                    {{>confirmRequest}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4">
+            {{> baseInfo}}
+        </div>
+
+        <div class="col-xs-6 col-sm-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">Your order</div>
+                <div class="panel-body">
+                    {{>order}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<template name="baseInfo">
+    <label class="col-sm-2 control-label">Search</label>
+    <div class="col-xs-12 col-sm-10">
+        <input id="searchItems" class="form-control" type="text" placeholder="Search">
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Count</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each items}}
+            <tr>
+                <th>{{name}}</th>
+                <td>{{count}}</td>
+                <td>{{value}}$</td>
+                <td>
+                    <button id="orderItem" type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button id="removeItem" type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <input id="nameInput" type="text" class="form-control" placeholder="Name">
+        </div>
+        <div class="col-xs-4">
+            <input id="countInput" type="text" class="form-control" placeholder="Count">
+        </div>
+        <div class="col-xs-4">
+            <input id="valueInput" type="text" class="form-control" placeholder="Value">
+        </div>
+    </div>
+
+    <button id="addItem" type="button" class="btn btn-info">Add Item</button>
+</template>
+
+<template name="order">
+    <ul class="list-group">
+        {{#each orderItems}}
+        <li class="list-group-item">
+            <span class="badge">{{count}}</span>{{name}}
+        </li>
+        {{/each}}
+        <li class="list-group-item">
+            <span class="badge">{{countOrderItems}}</span><strong>Total Items</strong>
+        </li>
+    </ul>
+
+    <button id="sendOrder" type="button" class="btn btn-info">Send order</button>
+</template>
+
+<template name="confirmRequest">
+    <li class="list-group-item">Hello</li>
+</template>
