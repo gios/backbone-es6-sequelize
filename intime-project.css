@@ -1,9 +1,10 @@
 html {
-    width: 100%;
     overflow-x: hidden;
+    width: 100%;
 }
-#footer {
+
+footer {
     position: fixed;
-    bottom: -20px;
+    top: 96%;
     width: 100%;
 }
