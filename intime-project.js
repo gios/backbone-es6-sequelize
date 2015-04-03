@@ -1,105 +1,128 @@
-Items = new Mongo.Collection('items');
-Orders = new Mongo.Collection('orders');
-Requests = new Mongo.Collection('requests');
+/* global Items:true, Orders:true, Requests:true */
+(function () {
+    'use strict';
+    
+    Items = new Mongo.Collection('items');
+    Orders = new Mongo.Collection('orders');
+    Requests = new Mongo.Collection('requests');
 
-if (Meteor.isClient) {
+    if (Meteor.isClient) {
 
-    Template.baseInfo.helpers({
-        items: function () {
-            return Items.find({}, { sort: { createdAt: -1 } });
-        }
-    });
-
-    Template.baseInfo.events({
-        'click #addItem': function (event) {
-            var nameInput = $('#nameInput')[0].value,
-                countInput = $('#countInput')[0].value,
-                valueInput = $('#valueInput')[0].value;
-            
-            var searchName = Items.findOne({ name: nameInput }),
-                searchValue = Items.findOne({ value: parseFloat(valueInput) });
-            
-            if ((searchName !== undefined) && (searchValue !== undefined)) {
-                var searchUnupdatedItem = Items.findOne({ name: nameInput });
-                Items.update(searchUnupdatedItem._id, { $inc: { count: parseInt(countInput) } });
-            } else if ((searchName !== undefined) && (searchValue === undefined)) {
-                Items.insert({
-                    name: nameInput,
-                    count: parseInt(countInput),
-                    value: parseFloat(valueInput),
-                    createdAt: new Date()
-                });
-            } else {
-                Items.insert({
-                    name: nameInput,
-                    count: parseInt(countInput),
-                    value: parseFloat(valueInput),
-                    createdAt: new Date()
+        Template.baseInfo.helpers({
+            items: function () {
+                return Items.find({}, {
+                    sort: {
+                        createdAt: -1
+                    }
                 });
             }
+        });
 
-            $('#nameInput')[0].value = '';
-            $('#countInput')[0].value = '';
-            $('#valueInput')[0].value = '';
+        Template.baseInfo.events({
+            'click #addItem': function (event) {
 
-            event.preventDefault();
-        },
+                var nameInput = $('#nameInput')[0].value,
+                    countInput = $('#countInput')[0].value,
+                    valueInput = $('#valueInput')[0].value;
 
-        'click #removeItem': function (event) {
-            Items.remove(this._id);
-        },
+                var sName = Items.findOne({
+                        name: nameInput
+                    }),
+                    sValue = Items.findOne({
+                        value: parseFloat(valueInput)
+                    });
 
-        'click #orderItem': function (event) {
-            var searchItem = Items.findOne({
-                _id: this._id
-            });
+                if ((sName !== undefined) && (sValue !== undefined)) {
+                    
+                    var searchUnupdatedItem = Items.findOne({
+                        name: nameInput
+                    });
+                    
+                    Items.update(searchUnupdatedItem._id, {
+                        $inc: {
+                            count: parseInt(countInput)
+                        }
+                    });
+                } else if ((sName !== undefined) && (sValue === undefined)) {
+                    
+                    Items.insert({
+                        name: nameInput,
+                        count: parseInt(countInput),
+                        value: parseFloat(valueInput),
+                        createdAt: new Date()
+                    });
+                } else {
+                    Items.insert({
+                        name: nameInput,
+                        count: parseInt(countInput),
+                        value: parseFloat(valueInput),
+                        createdAt: new Date()
+                    });
+                }
 
-            Orders.insert({
-                name: searchItem.name,
-                count: parseInt(searchItem.count),
-                value: parseFloat(searchItem.value)
-            });
-        },
-        
-        'keypress #searchItems': function (event) {
-            var searchText = event.target.value;
-            console.log(searchText);
-        }
-    });
+                $('#nameInput')[0].value = '';
+                $('#countInput')[0].value = '';
+                $('#valueInput')[0].value = '';
 
-    Template.order.helpers({
-        orderItems: function () {
-            return Orders.find({});
-        },
-        countOrderItems: function () {
-            return Orders.find({}).count();
-        }
-    });
+                event.preventDefault();
+            },
 
-    Template.order.events({
-        'click #sendOrder': function (event) {
-            console.log("send!");
-        }
-    });
+            'click #removeItem': function () {
+                Items.remove(this._id);
+            },
 
-    Accounts.ui.config({
-        requestPermissions: {},
-        extraSignupFields: [{
-            fieldName: 'first-name',
-            fieldLabel: 'First name',
-            inputType: 'text',
-            visible: true,
-            saveToProfile: true
-    }, {
-            fieldName: 'last-name',
-            fieldLabel: 'Last name',
-            inputType: 'text',
-            visible: true,
-            saveToProfile: true
-    }]
-    });
-}
+            'click #orderItem': function () {
+                var searchItem = Items.findOne({
+                    _id: this._id
+                });
 
-if (Meteor.isServer) {
-    Meteor.startup(function () {});
-}
+                Orders.insert({
+                    name: searchItem.name,
+                    count: parseInt(searchItem.count),
+                    value: parseFloat(searchItem.value)
+                });
+            },
+
+            'keypress #searchItems': function (event) {
+                var searchText = event.target.value;
+                console.log(searchText);
+            }
+        });
+
+        Template.order.helpers({
+            orderItems: function () {
+                return Orders.find({});
+            },
+            countOrderItems: function () {
+                return Orders.find({}).count();
+            }
+        });
+
+        Template.order.events({
+            'click #sendOrder': function () {
+                console.log("send!");
+            }
+        });
+
+        Accounts.ui.config({
+            requestPermissions: {},
+            extraSignupFields: [{
+                fieldName: 'first-name',
+                fieldLabel: 'First name',
+                inputType: 'text',
+                visible: true,
+                saveToProfile: true
+            }, {
+                fieldName: 'last-name',
+                fieldLabel: 'Last name',
+                inputType: 'text',
+                visible: true,
+                saveToProfile: true
+            }]
+        });
+    }
+
+    if (Meteor.isServer) {
+        Meteor.startup(function () {});
+    }
+})();

@@ -1,28 +1,11 @@
-// Keep track of source paths that have been parsed by jshint
-var sources = {};
-
-// Meteor specific globals
-// TODO: In future this could be generated from exportSymbols / @export?
-var globals = {
-  "Meteor": false,
-  "Accounts": false,
-  "Session": false,
-  "Template": false,
-  "check": false,
-  "Match": false,
-  "Deps": false,
-  "EJSON": false,
-  "Email": false,
-  "Package": false,
-  "Npm": false,
-  "Assets": false,
-  "process": false,
-  "Tinytest": false
-};
-
-var options = {
-    // JSHint Default Configuration File (as on JSHint website)
-    // Modified for describing Meteor.js convention
+//.jshintrc
+{
+    // JSHint Meteor Configuration File
+    // Match the Meteor Style Guide
+    //
+    // By @raix with contributions from @aldeed and @awatson1978
+    // Source https://github.com/raix/Meteor-jshintrc
+    //
     // See http://jshint.com/docs/ for more details
 
     "maxerr"        : 50,       // {int} Maximum error before stopping
@@ -49,7 +32,7 @@ var options = {
     "undef"         : true,     // true: Require all non-global variables to be declared (prevents global leaks)
     "unused"        : true,     // true: Require all defined variables be used
     "strict"        : true,     // true: Requires all functions run in ES5 Strict Mode
-    "trailing"      : true,    // true: Prohibit trailing whitespaces
+    "trailing"      : true,     // true: Prohibit trailing whitespaces
     "maxparams"     : false,    // {int} Max number of formal params allowed per function
     "maxdepth"      : false,    // {int} Max depth of nested blocks (within functions)
     "maxstatements" : false,    // {int} Max number statements per function
@@ -97,6 +80,7 @@ var options = {
     "worker"        : false,    // Web Workers
     "wsh"           : false,    // Windows Scripting Host
     "yui"           : false,    // Yahoo User Interface
+    //"meteor"        : false,    // Meteor.js
 
     // Legacy
     "nomen"         : false,    // true: Prohibit dangling `_` in variables
@@ -104,64 +88,46 @@ var options = {
     "passfail"      : false,    // true: Stop on first error
     "white"         : false,    // true: Check against strict whitespace and indentation rules
 
-    // Custom Globals
-    "predef"        : [ ]       // additional predefined global variables
-};
+    // Custom globals, from http://docs.meteor.com, in the order they appear there
+    "globals"       : {
+      "Meteor": false,
+      "DDP": false,
+      "Mongo": false, //Meteor.Collection renamed to Mongo.Collection
+      "Session": false,
+      "Accounts": false,
+      "Template": false,
+      "Blaze": false,  //UI is being renamed Blaze
+      "UI": false,
+      "Match": false,
+      "check": false,
+      "Tracker": false, //Deps renamed to Tracker
+      "Deps": false,
+      "ReactiveVar": false,
+      "EJSON": false,
+      "HTTP": false,
+      "Email": false,
+      "Assets": false,
+      "Handlebars": false,      // https://github.com/meteor/meteor/wiki/Handlebars
+      "Package": false,
+      "App": false, //mobile-config.js
 
+      // Meteor internals
+      "DDPServer": false,
+      "global": false,
+      "Log": false,
+      "MongoInternals": false,
+      "process": false,
+      "WebApp": false,
+      "WebAppInternals": false,
 
-// Define our source handler for javascript files
-var jshintHandler = function(compileStep) { //bundle, compileStep.inputPath, serverPath, where) {
-  console.log('jshintHandler');
-  // Make sure we dont parse same file twice, eg. client + server
-  if (typeof sources[compileStep.inputPath] === 'undefined') {
-    
-    // Mark the file as parsed
-    sources[compileStep.inputPath] = true;
+      // globals useful when creating Meteor packages
+      "Npm": false,
+      "Tinytest": false,
 
-    // Load source code
-    var source = compileStep.read().toString('utf8');
-
-    // Fire up jshint
-    var JSHINT = Npm.require("jshint").JSHINT;
-
-    // Test file
-    var success = JSHINT(source, options, globals);
-
-    if (success) {
-      // Not much to report
-      //console.log('File: ' + compileStep.inputPath + '  - OK');
-    } else {
-      // We got some errors/warnings from hint
-      var result = JSHINT.data();
-
-      // Print source path to terminal
-      console.log('\u001b[31mJSHINT: \u001b[0m' + compileStep.inputPath + '');
-
-      // Iterate over each error
-      for (var i = 0; i < result.errors.length; i++) {
-        
-        // Get the error object
-        var error = result.errors[i]; // id, raw, code, evidence, line, character, scope, a, b, c, s, reason
-        
-        // We highlight the point of evidence
-        var highlightEvidence = error.evidence.substr(0, error.character - 1) + // Heading
-                '\u001b[41m' + error.evidence.substr(error.character - 1, 1) +  // Mark the point
-                '\u001b[0m' + error.evidence.substr(error.character);           // Trailing
-
-        // Print info to terminal
-        console.log(error.code + ' \u001b[32mline ' + error.line + ':' + error.character +
-                '\u001b[0m \u001b[37m' + error.reason + '');
-                
-        // Print the highlighted evidence to terminal
-        console.log('\u001b[0m-> ' + highlightEvidence + '\u001b[0m');
-
-      }
+      // common Meteor packages
+      "Random": false,
+      "_": false,               // Underscore.js
+      "$": false,               // jQuery
+      "Router": false           // iron-router
     }
-
-  }
-};
-
-// TODO: registerSourceHandler()
-// At the moment this is not working, but might come one day
-// https://github.com/meteor/meteor/pull/1207
-Plugin.registerSourceHandler('js', jshintHandler);
+}
