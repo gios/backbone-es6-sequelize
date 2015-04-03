@@ -1,1 +1,9 @@
-/* CSS declarations go here */
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
+#footer {
+    position: fixed;
+    bottom: -20px;
+    width: 100%;
+}

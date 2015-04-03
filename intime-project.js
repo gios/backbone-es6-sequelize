@@ -1,12 +1,21 @@
 /* global Items:true, Orders:true, Requests:true */
+
+Items = new Mongo.Collection('items');
+Orders = new Mongo.Collection('orders');
+Requests = new Mongo.Collection('requests');
+
 (function () {
     'use strict';
-    
-    Items = new Mongo.Collection('items');
-    Orders = new Mongo.Collection('orders');
-    Requests = new Mongo.Collection('requests');
+
+    var VERSION = '0.0.7';
 
     if (Meteor.isClient) {
+
+        Template.body.helpers({
+            getVersion: function () {
+                return VERSION;
+            }
+        });
 
         Template.baseInfo.helpers({
             items: function () {
@@ -26,25 +35,24 @@
                     valueInput = $('#valueInput')[0].value;
 
                 var sName = Items.findOne({
-                        name: nameInput
-                    }),
-                    sValue = Items.findOne({
-                        value: parseFloat(valueInput)
-                    });
+                    name: nameInput
+                });
+                var sValue = Items.findOne({
+                    value: parseFloat(valueInput)
+                });
 
                 if ((sName !== undefined) && (sValue !== undefined)) {
-                    
                     var searchUnupdatedItem = Items.findOne({
                         name: nameInput
                     });
-                    
+
                     Items.update(searchUnupdatedItem._id, {
                         $inc: {
                             count: parseInt(countInput)
                         }
                     });
                 } else if ((sName !== undefined) && (sValue === undefined)) {
-                    
+
                     Items.insert({
                         name: nameInput,
                         count: parseInt(countInput),
