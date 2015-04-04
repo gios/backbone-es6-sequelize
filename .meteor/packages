@@ -10,4 +10,6 @@ insecure
 accounts-password
 twbs:bootstrap
 ian:accounts-ui-bootstrap-3
+aldeed:collection2
 aldeed:autoform
+iron:router

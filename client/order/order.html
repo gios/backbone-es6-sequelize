@@ -1,0 +1,14 @@
+<template name="order">
+    <ul class="list-group">
+        {{#each orderItems}}
+        <li class="list-group-item">
+            <span class="badge">{{count}}</span>{{name}}
+        </li>
+        {{/each}}
+        <li class="list-group-item">
+            <span class="badge">{{countOrderItems}}</span><strong>Total Items</strong>
+        </li>
+    </ul>
+
+    <button id="sendOrder" type="button" class="btn btn-info">Send order</button>
+</template>
