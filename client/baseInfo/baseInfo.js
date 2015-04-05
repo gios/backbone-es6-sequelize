@@ -3,6 +3,7 @@
 'use strict';
 
 if (Meteor.isClient) {
+
     Template.baseInfo.helpers({
         items: function () {
             var searchItems = Items.find({}, {

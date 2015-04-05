@@ -1,35 +1,6 @@
 <template name="baseInfo">
-    <label class="col-sm-2 control-label">Search</label>
-    <div class="col-xs-12 col-sm-10">
-        <input id="searchItems" class="form-control" type="text" placeholder="Search">
-    </div>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Count</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each items}}
-            <tr>
-                <th>{{name}}</th>
-                <td>{{count}}</td>
-                <td>{{price}}$</td>
-                <td>
-                    <button id="orderItem" type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-ok"></span>
-                    </button>
-                    <button id="removeItem" type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                </td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    {{> reactiveTable collection=items}}
     <hr>
+    <h2>Enter purchase data</h2>
     {{> quickForm id="demo" collection="Items" type="insert" validation="submit" }}
 </template>
