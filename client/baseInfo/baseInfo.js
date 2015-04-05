@@ -79,6 +79,7 @@ if (Meteor.isClient) {
         },
 
         'click #editItem': function () {
+            console.log(this);
             $('#modalEditItem').modal('show');
         }
     });
