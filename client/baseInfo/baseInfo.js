@@ -22,13 +22,36 @@ if (Meteor.isClient) {
             });
 
             return resultArray;
+        },
+
+        reactiveTableSettings: function () {
+            return {
+                fields: [{
+                        label: "Ім'я товару",
+                        key: "name"
+                }, {
+                        label: "Кількісь товарів",
+                        key: "count"
+                },
+                    {
+                        label: "Ціна",
+                        key: "price"
+                }, {
+                        label: 'Дії',
+                        tmpl: Template.itemsActions
+                }]
+            };
         }
     });
 
     Template.baseInfo.events({
         'click #removeItem': function () {
             HTTP.del('/items', {
-                    data: this
+                    data: {
+                        name: this.name,
+                        count: this.count,
+                        price: this.price
+                    }
                 },
                 function (error, result) {
                     if (error) {

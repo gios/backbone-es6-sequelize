@@ -1,6 +1,7 @@
 'use strict';
 
-var VERSION = '0.0.9';
+var VERSION = '0.0.12';
+i18n.setLanguage('ua');
 
 if (Meteor.isClient) {
 

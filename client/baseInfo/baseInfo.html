@@ -1,6 +1,15 @@
 <template name="baseInfo">
-    {{> reactiveTable collection=items}}
+    {{> reactiveTable collection=items rowsPerPage=10 settings=reactiveTableSettings }}
     <hr>
-    <h2>Enter purchase data</h2>
-    {{> quickForm id="demo" collection="Items" type="insert" validation="submit" }}
+    <h2>Введіть дані про покупку</h2>
+    {{> quickForm id="baseInfoTable" collection="Items" type="insert" validation="submit" }}
+</template>
+
+<template name="itemsActions">
+    <button id="orderItem" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-ok"></span>
+    </button>
+    <button id="removeItem" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
 </template>
