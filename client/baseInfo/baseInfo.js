@@ -6,11 +6,7 @@ if (Meteor.isClient) {
 
     Template.baseInfo.helpers({
         items: function () {
-            var searchItems = Items.find({}, {
-                sort: {
-                    createdAt: -1
-                }
-            });
+            var searchItems = Items.find({});
 
             var resultArray = [];
             searchItems.forEach(function (post) {
@@ -34,6 +30,10 @@ if (Meteor.isClient) {
                         key: "count"
                 },
                     {
+                        label: "Одиниця виміру",
+                        key: "units"
+                },
+                    {
                         label: "Ціна",
                         key: "price"
                 }, {
@@ -50,7 +50,8 @@ if (Meteor.isClient) {
                     data: {
                         name: this.name,
                         count: this.count,
-                        price: this.price
+                        price: this.price,
+                        units: this.units
                     }
                 },
                 function (error, result) {
@@ -63,20 +64,22 @@ if (Meteor.isClient) {
         },
 
         'click #orderItem': function () {
-            var searchItem = Items.findOne({
-                _id: this._id
-            });
-
             Orders.insert({
-                name: searchItem.name,
-                count: parseInt(searchItem.count),
-                value: parseFloat(searchItem.value)
+                name: this.name,
+                count: this.count,
+                price: this.price,
+                createdAt: new Date()
+            }, function (error, result) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(result);
+                }
             });
         },
 
-        'keypress #searchItems': function (event) {
-            var searchText = event.target.value;
-            console.log(searchText);
+        'click #editItem': function () {
+            $('#modalEditItem').modal('show');
         }
     });
 }

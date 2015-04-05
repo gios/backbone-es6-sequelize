@@ -2,6 +2,9 @@
     <ul class="list-group">
         {{#each orderItems}}
         <li class="list-group-item">
+            <button id="removeOrderItem" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
             <span class="badge">{{count}}</span>{{name}}
         </li>
         {{/each}}

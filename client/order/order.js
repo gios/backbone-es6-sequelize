@@ -14,5 +14,8 @@ Template.order.helpers({
 Template.order.events({
     'click #sendOrder': function () {
         console.log("send!");
+    },
+    'click #removeOrderItem': function () {
+        Orders.remove(this._id);
     }
 });
