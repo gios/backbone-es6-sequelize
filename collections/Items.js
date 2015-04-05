@@ -3,16 +3,16 @@
 Items = new Mongo.Collection('items');
 
 Items.attachSchema(new SimpleSchema({
-    invoice: {
+    "invoice": {
         type: String,
-        label: "Application number",
+        label: "Invoice number",
         max: 20
     },
     "createdAt": {
         type: Date,
         label: "Date of purchase"
     },
-    items: {
+    "items": {
         type: Array,
         optional: true,
         minCount: 0,

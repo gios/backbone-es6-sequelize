@@ -26,7 +26,16 @@ if (Meteor.isClient) {
 
     Template.baseInfo.events({
         'click #removeItem': function () {
-            Items.remove(this._id);
+            HTTP.del('/items', {
+                    data: this
+                },
+                function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log(result);
+                    }
+                });
         },
 
         'click #orderItem': function () {
