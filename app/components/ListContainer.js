@@ -31,15 +31,23 @@ class ListContainer extends React.Component {
     });
   }
   render() {
+
+    var styles = {
+      textCenter: {
+        textAlign: "center"
+      }
+    };
+
     return (
-      <div className="col-sm-6 col-md-offset-3">
-        <div className="col-sm-12">
-          <h3 className="text-center">
+      <div className="row">
+        <div className="col-md-5"></div>
+        <div className="col-md-1">
+          <h3 style={styles.textCenter}>
             Todo List
           </h3>
-          <AddItem add={this.handleAddItem}/>
-          <List items={this.state.list} remove={this.handleRemoveItem}/>
-        </div>
+          <AddItem add={this.handleAddItem} style={styles.textCenter}/>
+          <List items={this.state.list} remove={this.handleRemoveItem}/></div>
+        <div className="col-md-6"></div>
       </div>
     )
   }
