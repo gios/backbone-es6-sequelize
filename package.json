@@ -1,0 +1,22 @@
+{
+  "name": "intime-project",
+  "version": "0.0.1",
+  "description": "",
+  "main": "App.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Gios",
+  "dependencies": {
+    "events": "^1.0.2",
+    "flux": "^2.0.1",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.5",
+    "jsx-loader": "^0.13.2",
+    "webpack": "^1.5.3"
+  }
+}
