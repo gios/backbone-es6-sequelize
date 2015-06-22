@@ -12,12 +12,15 @@ class List extends React.Component {
       todoItem: {
         paddingLeft: 10,
         fontSize: 15
+      },
+      listWrapper: {
+        minWidth: "270px"
       }
     };
 
     var listItems = this.props.items.map(function (item, index) {
       return (
-        <li className="list-group-item" key={index}>
+        <li key={index} style={styles.listWrapper}>
           <IconButton iconClassName="fa fa-times-circle" onClick={this.props.remove.bind(null, index)}/>
           <span style={styles.todoItem}>
             {item}

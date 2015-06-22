@@ -17,7 +17,7 @@ class AddItem extends React.Component {
   render() {
     return (
       <div>
-        <TextField floatingLabelText="Enter" hintText="New Item" onKeyDown={this.handleSubmit.bind(this)} ref="newItem" />
+        <TextField floatingLabelText="Enter" hintText="New Item" onKeyDown={this.handleSubmit.bind(this)} ref="newItem" maxLength="20"/>
       </div>
     )
   }
