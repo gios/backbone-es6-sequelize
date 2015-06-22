@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 
 module.exports = {
-  entry: ["webpack/hot/only-dev-server","./app/App.js"],
+  entry: ["webpack/hot/only-dev-server", "./app/App.js"],
 
   cache: true,
   debug: true,

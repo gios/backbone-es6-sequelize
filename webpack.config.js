@@ -2,6 +2,14 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: "./app/App.js",
+
+  debug: false,
+  devtool: false,
+
+  stats: {
+    colors: true,
+    reasons: false
+  },
   output: {
     filename: "public/bundle.js"
   },
