@@ -1,4 +1,6 @@
-var React = require('react');
+var React = require('react'),
+  mui = require("material-ui"),
+  IconButton = mui.IconButton;
 
 class List extends React.Component {
   render() {
@@ -7,29 +9,16 @@ class List extends React.Component {
         paddingLeft: 0,
         listStyleType: "none"
       },
-      listGroup: {
-        margin: '5px 0',
-        borderRadius: 5
-      },
-      removeItem: {
-        fontSize: 20,
-        float: "left",
-        position: "absolute",
-        top: 12,
-        left: 6,
-        cursor: "pointer",
-        color: "rgb(222, 79, 79)"
-      },
       todoItem: {
-        paddingLeft: 20,
-        fontSize: 17
+        paddingLeft: 10,
+        fontSize: 15
       }
     };
 
     var listItems = this.props.items.map(function (item, index) {
       return (
-        <li className="list-group-item" key={index} style={styles.listGroup}>
-          <span className="glyphicon glyphicon-remove" onClick={this.props.remove.bind(null, index)} style={styles.removeItem}></span>
+        <li className="list-group-item" key={index}>
+          <IconButton iconClassName="fa fa-times-circle" onClick={this.props.remove.bind(null, index)}/>
           <span style={styles.todoItem}>
             {item}
           </span>

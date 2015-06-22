@@ -10,9 +10,11 @@ module.exports = {
     colors: true,
     reasons: false
   },
+
   output: {
     filename: "public/bundle.js"
   },
+
   module: {
     loaders: [{
       test: /\.js$/,
@@ -24,6 +26,7 @@ module.exports = {
       loader: "babel-loader"
     }]
   },
+
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       compress: {

@@ -16,6 +16,7 @@ module.exports = {
     path: "/public",
     filename: "/public/bundle.js"
   },
+
   module: {
     loaders: [{
       test: /\.js$/,
@@ -27,6 +28,7 @@ module.exports = {
       loader: "babel-loader"
     }]
   },
+  
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()

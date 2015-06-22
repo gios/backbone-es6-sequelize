@@ -1,10 +1,15 @@
-var React = require('react');
+var React = require("react"),
+  injectTapEventPlugin = require("react-tap-event-plugin"),
+  mui = require("material-ui"),
+  TextField = mui.TextField;
+injectTapEventPlugin();
 
 class AddItem extends React.Component {
+
   handleSubmit(e) {
     if (e.keyCode === 13) {
-      var newItem = this.refs.newItem.getDOMNode().value;
-      this.refs.newItem.getDOMNode().value = '';
+      var newItem = this.refs.newItem.getValue();
+      this.refs.newItem.clearValue();
       this.props.add(newItem);
     }
   }
@@ -12,7 +17,7 @@ class AddItem extends React.Component {
   render() {
     return (
       <div>
-        <input className="form-control" onKeyDown={this.handleSubmit.bind(this)} placeholder="New Item" ref="newItem" type="text"/>
+        <TextField floatingLabelText="Enter" hintText="New Item" onKeyDown={this.handleSubmit.bind(this)} ref="newItem" />
       </div>
     )
   }
