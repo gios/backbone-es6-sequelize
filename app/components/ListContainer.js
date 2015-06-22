@@ -34,7 +34,7 @@ class ListContainer extends React.Component {
 
     var styles = {
       textCenter: {
-        textAlign: "center"
+        textAlign: "left"
       }
     };
 
@@ -42,7 +42,7 @@ class ListContainer extends React.Component {
       <div className="row">
         <div className="col-md-5"></div>
         <div className="col-md-1">
-          <h3 style={styles.textCenter}>
+          <h3 style={styles.textCenter} className="iron" >
             Todo List
           </h3>
           <AddItem add={this.handleAddItem} style={styles.textCenter}/>
