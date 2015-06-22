@@ -1,19 +1,19 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var appConstants = require('../constants/appConstants');
+var AppDispatcher = require('../dispatcher/AppDispatcher'),
+    appConstants = require('../constants/appConstants');
 
 var todoActions = {
-  addItem: function(item){
+  addItem: function(item) {
     AppDispatcher.handleAction({
       actionType: appConstants.ADD_ITEM,
       data: item
     });
   },
-  removeItem: function(index){
+  removeItem: function(index) {
     AppDispatcher.handleAction({
       actionType: appConstants.REMOVE_ITEM,
       data: index
-    })
+    });
   }
 };
 
-module.exports = todoActions;
+export default todoActions;

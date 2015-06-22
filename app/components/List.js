@@ -1,7 +1,7 @@
 var React = require('react');
 
-var List = React.createClass({
-  render: function(){
+class List extends React.Component {
+  render() {
     var styles = {
       uList: {
         paddingLeft: 0,
@@ -25,14 +25,11 @@ var List = React.createClass({
         fontSize: 17
       }
     };
-    var listItems = this.props.items.map(function(item, index){
+
+    var listItems = this.props.items.map(function (item, index) {
       return (
-        <li key={index} className="list-group-item" style={styles.listGroup}>
-          <span
-            className="glyphicon glyphicon-remove"
-            style={styles.removeItem}
-            onClick={this.props.remove.bind(null, index)}>
-          </span>
+        <li className="list-group-item" key={index} style={styles.listGroup}>
+          <span className="glyphicon glyphicon-remove" onClick={this.props.remove.bind(null, index)} style={styles.removeItem}></span>
           <span style={styles.todoItem}>
             {item}
           </span>
@@ -45,6 +42,6 @@ var List = React.createClass({
       </ul>
     )
   }
-});
+}
 
-module.exports = List;
+export default List;

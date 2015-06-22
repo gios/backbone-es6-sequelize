@@ -1,20 +1,21 @@
 var React = require('react');
 
-var AddItem = React.createClass({
-  handleSubmit: function(e){
-    if(e.keyCode === 13){
+class AddItem extends React.Component {
+  handleSubmit(e) {
+    if (e.keyCode === 13) {
       var newItem = this.refs.newItem.getDOMNode().value;
       this.refs.newItem.getDOMNode().value = '';
       this.props.add(newItem);
     }
-  },
-  render: function(){
+  }
+
+  render() {
     return (
       <div>
-        <input type="text" ref="newItem" className="form-control" placeholder="New Item" onKeyDown={this.handleSubmit}  />
+        <input className="form-control" onKeyDown={this.handleSubmit.bind(this)} placeholder="New Item" ref="newItem" type="text"/>
       </div>
     )
   }
-});
+}
 
-module.exports = AddItem;
+export default AddItem;

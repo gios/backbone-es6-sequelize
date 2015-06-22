@@ -1,8 +1,8 @@
-var React = require('react');
-var ListContainer = require('./components/ListContainer');
+var React = require('react'),
+  ListContainer = require('./components/ListContainer');
 
-var App = React.createClass({
-  render: function(){
+class App extends React.Component {
+  render() {
     return (
       <div className="container">
         <div className="row">
@@ -11,9 +11,5 @@ var App = React.createClass({
       </div>
     )
   }
-});
-
-React.render(
-  <App />,
-  document.getElementById('app')
-)
+}
+React.render(<App />, document.getElementById('app'));

@@ -1,43 +1,48 @@
-var React = require('react');
-var AddItem = require('./AddItem');
-var List = require('./List');
-var todoStore = require('../stores/todoStore');
-var todoActions = require('../actions/todoActions');
+var React = require('react'),
+  AddItem = require('./AddItem'),
+  List = require('./List'),
+  todoStore = require('../stores/todoStore'),
+  todoActions = require('../actions/todoActions');
 
-var ListContainer = React.createClass({
-  getInitialState: function(){
-    return {
+class ListContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       list: todoStore.getList()
     }
-  },
-  componentDidMount: function(){
+    this._onChange = this._onChange.bind(this);
+    this._onChange = this._onChange.bind(this);
+  }
+  componentDidMount() {
     todoStore.addChangeListener(this._onChange);
-  },
-  componentWillUnmount: function(){
+  }
+  componentWillUnmount() {
     todoStore.removeChangeListener(this._onChange);
-  },
-  handleAddItem: function(newItem){
+  }
+  handleAddItem(newItem) {
     todoActions.addItem(newItem);
-  },
-  handleRemoveItem: function(index){
+  }
+  handleRemoveItem (index) {
     todoActions.removeItem(index);
-  },
-  _onChange: function(){
+  }
+  _onChange() {
     this.setState({
       list: todoStore.getList()
-    })
-  },
-  render: function(){
+    });
+  }
+  render() {
     return (
       <div className="col-sm-6 col-md-offset-3">
         <div className="col-sm-12">
-          <h3 className="text-center"> Todo List </h3>
+          <h3 className="text-center">
+            Todo List
+          </h3>
           <AddItem add={this.handleAddItem}/>
           <List items={this.state.list} remove={this.handleRemoveItem}/>
         </div>
       </div>
     )
   }
-});
+}
 
-module.exports = ListContainer;
+export default ListContainer;

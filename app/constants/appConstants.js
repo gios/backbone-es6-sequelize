@@ -3,4 +3,4 @@ var appConstants = {
   REMOVE_ITEM: "REMOVE_ITEM"
 };
 
-module.exports = appConstants;
+export default appConstants;
