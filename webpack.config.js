@@ -16,6 +16,11 @@ module.exports = {
   },
 
   module: {
+    preLoaders: [{
+      test: /\.js?/,
+      exclude: __dirname + '/node_modules',
+      loader: 'jsxhint-loader?harmony'
+    }],
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,

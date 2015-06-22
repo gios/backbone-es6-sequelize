@@ -26,7 +26,7 @@ var todoStore = objectAssign({}, EventEmitter.prototype, {
   },
   getList: function() {
     return _store.list;
-  },
+  }
 });
 
 AppDispatcher.register(function(payload) {
