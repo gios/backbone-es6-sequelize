@@ -1,8 +1,8 @@
-var React = require('react'),
-  AddItem = require('./AddItem'),
-  List = require('./List'),
-  todoStore = require('../stores/todoStore'),
-  todoActions = require('../actions/todoActions');
+import React from "react";
+import AddItem from "./AddItem";
+import List from "./List";
+import todoStore from "../stores/todoStore";
+import todoActions from "../actions/todoActions";
 
 class ListContainer extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class ListContainer extends React.Component {
   }
   render() {
 
-    var styles = {
+    let styles = {
       textCenter: {
         textAlign: "left"
       }

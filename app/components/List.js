@@ -1,10 +1,10 @@
-var React = require('react'),
-  mui = require("material-ui"),
-  IconButton = mui.IconButton;
+import React from "react";
+import mui from "material-ui";
+var IconButton = mui.IconButton;
 
 class List extends React.Component {
   render() {
-    var styles = {
+    let styles = {
       uList: {
         paddingLeft: 0,
         listStyleType: "none"
@@ -18,7 +18,7 @@ class List extends React.Component {
       }
     };
 
-    var listItems = this.props.items.map(function (item, index) {
+    let listItems = this.props.items.map(function (item, index) {
       return (
         <li key={index} style={styles.listWrapper}>
           <IconButton iconClassName="fa fa-times-circle" onClick={this.props.remove.bind(null, index)}/>

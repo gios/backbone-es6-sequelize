@@ -1,5 +1,5 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher'),
-    appConstants = require('../constants/appConstants');
+import AppDispatcher from "../dispatcher/AppDispatcher";
+import appConstants from "../constants/appConstants";
 
 var todoActions = {
   addItem: function(item) {

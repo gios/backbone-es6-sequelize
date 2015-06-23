@@ -1,14 +1,14 @@
-var React = require("react"),
-  injectTapEventPlugin = require("react-tap-event-plugin"),
-  mui = require("material-ui"),
-  TextField = mui.TextField;
+import React from "react";
+import injectTapEventPlugin from "react-tap-event-plugin";
+import mui from "material-ui";
+var TextField = mui.TextField;
 injectTapEventPlugin();
 
 class AddItem extends React.Component {
 
   handleSubmit(e) {
     if (e.keyCode === 13) {
-      var newItem = this.refs.newItem.getValue();
+      let newItem = this.refs.newItem.getValue();
       this.refs.newItem.clearValue();
       this.props.add(newItem);
     }
