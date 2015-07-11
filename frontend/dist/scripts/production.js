@@ -7,7 +7,7 @@ var _jquery2 = _interopRequireDefault(_jquery);
 
 (0, _jquery2["default"])(document).ready(function () {
   "use strict";
-  (0, _jquery2["default"])("p").append("<br>READY!");
+  (0, _jquery2["default"])("p").append("<br>GOOO!");
 });
 },{"jquery":2}],2:[function(require,module,exports){
 /*!
