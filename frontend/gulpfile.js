@@ -1,11 +1,13 @@
 var gulp = require("gulp");
 var sourcemaps = require("gulp-sourcemaps");
 var babel = require("gulp-babel");
+var browserify = require("gulp-browserify");
 var uglify = require("gulp-uglify");
 var postcss = require("gulp-postcss");
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var csso = require("gulp-csso");
+var LessPluginCleanCSS = require('less-plugin-clean-css');
+var cleancss = new LessPluginCleanCSS({ advanced: true });
 var autoprefixer = require("autoprefixer-core");
 var less = require("gulp-less");
 var gutil = require("gulp-util");
@@ -15,15 +17,14 @@ var browserSync = require("browser-sync").create();
 gulp.task("babelify", function () {
   "use strict";
   return gulp.src("app/**/*.js")
-    .pipe(sourcemaps.init())
     .pipe(concat("production.js"))
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
     .pipe(babel({
       blacklist: ["strict"]
     }))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest("dist"))
+    .pipe(browserify())
+    .pipe(gulp.dest("dist/scripts"))
     .pipe(browserSync.stream());
 });
 
@@ -37,20 +38,19 @@ gulp.task("babelify:build", function () {
     .pipe(babel({
       blacklist: ["strict"]
     }))
-    .pipe(sourcemaps.write())
+    .pipe(browserify())
     .pipe(uglify())
-    .pipe(gulp.dest("dist"));
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest("dist/scripts"));
 });
 
 gulp.task("less", function () {
   "use strict";
   return gulp.src("app/styles/**/*.less")
-    .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(concat("production.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest("dist"))
+    .pipe(gulp.dest("dist/styles"))
     .pipe(browserSync.stream());
 });
 
@@ -58,12 +58,13 @@ gulp.task("less:build", function () {
   "use strict";
   return gulp.src("app/styles/**/*.less")
     .pipe(sourcemaps.init())
-    .pipe(less())
+    .pipe(less({
+      plugins: [cleancss]
+    }))
     .pipe(concat("production.min.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
-    .pipe(sourcemaps.write())
-    .pipe(csso())
-    .pipe(gulp.dest("dist"));
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest("dist/styles"));
 });
 
 gulp.task("browser-sync", function() {

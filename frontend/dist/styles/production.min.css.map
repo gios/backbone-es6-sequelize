@@ -1,0 +1,1 @@
+{"version":3,"sources":["hello.less"],"names":[],"mappings":"AAAA,KACE,qBAAA,CAAA","file":"production.min.css","sourcesContent":["body {\n  background-color: blue;\n}\n"],"sourceRoot":"/source/"}

@@ -13,14 +13,22 @@
     "browser-sync": "^2.7.13",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.6.0",
-    "gulp-csso": "^1.0.0",
     "gulp-jshint": "^1.11.2",
     "gulp-less": "^3.0.3",
     "gulp-postcss": "^5.1.9",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jshint-stylish": "^2.0.1"
+    "jshint-stylish": "^2.0.1",
+    "less-plugin-clean-css": "^1.5.0"
+  },
+  "dependencies": {
+    "backbone": "^1.2.1",
+    "backbone.marionette": "^2.4.2",
+    "bootstrap": "^3.3.5",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.0"
   }
 }
