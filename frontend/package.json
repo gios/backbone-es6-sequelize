@@ -1,8 +1,9 @@
 {
   "name": "intime-frontend",
   "version": "0.0.1",
-  "description": "Frontend part of intime project",
-  "main": "index.js",
+  "description": "Front-end part of intime project",
+  "main": "app/main.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

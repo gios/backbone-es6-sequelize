@@ -29,3 +29,4 @@ node_modules
 # Custom folder and files
 .DS_Store
 public/bundle.js
+dist

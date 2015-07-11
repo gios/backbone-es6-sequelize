@@ -4,9 +4,9 @@ var babel = require("gulp-babel");
 var browserify = require("gulp-browserify");
 var uglify = require("gulp-uglify");
 var postcss = require("gulp-postcss");
-var jshint = require('gulp-jshint');
-var stylish = require('jshint-stylish');
-var LessPluginCleanCSS = require('less-plugin-clean-css');
+var jshint = require("gulp-jshint");
+var stylish = require("jshint-stylish");
+var LessPluginCleanCSS = require("less-plugin-clean-css");
 var cleancss = new LessPluginCleanCSS({ advanced: true });
 var autoprefixer = require("autoprefixer-core");
 var less = require("gulp-less");
@@ -40,7 +40,7 @@ gulp.task("babelify:build", function () {
     }))
     .pipe(browserify())
     .pipe(uglify())
-    .pipe(sourcemaps.write('.'))
+    .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/scripts"));
 });
 
@@ -63,7 +63,7 @@ gulp.task("less:build", function () {
     }))
     .pipe(concat("production.min.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
-    .pipe(sourcemaps.write('.'))
+    .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/styles"));
 });
 

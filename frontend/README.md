@@ -1,1 +1,1 @@
-# Flux todo list example for 
+# Front-end part of Intime project
