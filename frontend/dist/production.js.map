@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.js"],"names":[],"mappings":";;AAAA,KAAA,CAAA,OAAA,CAAA,CAAA","file":"production.js","sourcesContent":["alert(\"hello\");\n"],"sourceRoot":"/source/"}
