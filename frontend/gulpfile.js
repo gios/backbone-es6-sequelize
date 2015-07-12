@@ -84,14 +84,22 @@ gulp.task("browser-sync", function() {
             index: "app/index.html"
         }
     });
+
     gulp.watch("app/**/*.js", function(e) {
       gutil.log(gutil.colors.bgYellow("JS"), ":: File changed ", gutil.colors.yellow(e.path));
       gulp.start("babelify");
     });
+
     gulp.watch("app/**/*.less", function(e) {
       gutil.log(gutil.colors.bgYellow("LESS"), ":: File changed ", gutil.colors.yellow(e.path));
       gulp.start("less");
     });
+
+    gulp.watch("app/templates/*.tpl", function(e) {
+      gutil.log(gutil.colors.bgYellow("TPL"), ":: File changed ", gutil.colors.yellow(e.path));
+      gulp.start("babelify");
+    });
+
     gulp.watch("app/*.html").on("change", browserSync.reload);
 });
 

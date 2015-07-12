@@ -1,11 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var _jquery = require("jquery");
 
@@ -23,53 +17,45 @@ var _templatesStatic_templateTpl = require("./templates/static_template.tpl");
 
 var _templatesStatic_templateTpl2 = _interopRequireDefault(_templatesStatic_templateTpl);
 
-_backbone2["default"].$ = _jquery2["default"];
+var _templatesDifferent_static_templateTpl = require("./templates/different_static_template.tpl");
 
-// import differentStaticTemplate from "./templates/different_static_template.tpl";
+var _templatesDifferent_static_templateTpl2 = _interopRequireDefault(_templatesDifferent_static_templateTpl);
+
+_backbone2["default"].$ = _jquery2["default"];
 
 (0, _jquery2["default"])(document).ready(function () {
   "use strict";
 
   var ContactManager = new _backboneMarionette2["default"].Application();
 
-  var StaticView = (function (_Marionette$ItemView) {
-    function StaticView() {
-      _classCallCheck(this, StaticView);
-
-      _get(Object.getPrototypeOf(StaticView.prototype), "constructor", this).call(this);
-      console.log((0, _jquery2["default"])("#main-region"));
-      this.el = "#main-region";
-      this.template = _templatesStatic_templateTpl2["default"];
-    }
-
-    _inherits(StaticView, _Marionette$ItemView);
-
-    return StaticView;
-  })(_backboneMarionette2["default"].ItemView);
-
-  ContactManager.on("start", function () {
-    var staticView = new StaticView();
-    console.log(staticView);
-    staticView.render();
+  ContactManager.StaticView = _backboneMarionette2["default"].ItemView.extend({
+    template: _templatesStatic_templateTpl2["default"]
   });
 
-  ContactManager.StaticView = _backboneMarionette2["default"].ItemView.extend({
-    el: "#main-region",
-    template: _templatesStatic_templateTpl2["default"]
+  ContactManager.on("before:start", function () {
+    var RegionContainer = _backboneMarionette2["default"].LayoutView.extend({
+      el: "#app-container",
+      regions: {
+        main: "#main-region"
+      }
+    });
+    ContactManager.regions = new RegionContainer();
   });
 
   ContactManager.on("start", function () {
     var staticView = new ContactManager.StaticView();
-    console.log(staticView);
-    staticView.render();
+    ContactManager.regions.main.show(staticView);
   });
 
   ContactManager.start();
 });
-},{"./templates/static_template.tpl":2,"backbone":7,"backbone.marionette":3,"jquery":9}],2:[function(require,module,exports){
-module.exports = "<span id=static-view class=instruction><p>This is text that was rendered by our Marionette app.</p></span>";
+},{"./templates/different_static_template.tpl":2,"./templates/static_template.tpl":3,"backbone":8,"backbone.marionette":4,"jquery":10}],2:[function(require,module,exports){
+module.exports = "<p>Text from a different template...</p>";
 
 },{}],3:[function(require,module,exports){
+module.exports = "<div id=static-view class=instruction><p>This is text that was rendered by our Marionette app.</p></div>";
+
+},{}],4:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.4.2
@@ -3508,7 +3494,7 @@ module.exports = "<span id=static-view class=instruction><p>This is text that wa
   return Marionette;
 }));
 
-},{"backbone":7,"backbone.babysitter":4,"backbone.wreqr":5,"underscore":6}],4:[function(require,module,exports){
+},{"backbone":8,"backbone.babysitter":5,"backbone.wreqr":6,"underscore":7}],5:[function(require,module,exports){
 // Backbone.BabySitter
 // -------------------
 // v0.1.8
@@ -3700,7 +3686,7 @@ module.exports = "<span id=static-view class=instruction><p>This is text that wa
 
 }));
 
-},{"backbone":7,"underscore":6}],5:[function(require,module,exports){
+},{"backbone":8,"underscore":7}],6:[function(require,module,exports){
 // Backbone.Wreqr (Backbone.Marionette)
 // ----------------------------------
 // v1.3.3
@@ -4137,7 +4123,7 @@ module.exports = "<span id=static-view class=instruction><p>This is text that wa
 
 }));
 
-},{"backbone":7,"underscore":6}],6:[function(require,module,exports){
+},{"backbone":8,"underscore":7}],7:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -5687,7 +5673,7 @@ module.exports = "<span id=static-view class=instruction><p>This is text that wa
   }
 }.call(this));
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.1
 
@@ -7564,9 +7550,9 @@ module.exports = "<span id=static-view class=instruction><p>This is text that wa
 }));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":9,"underscore":8}],8:[function(require,module,exports){
-module.exports=require(6)
-},{}],9:[function(require,module,exports){
+},{"jquery":10,"underscore":9}],9:[function(require,module,exports){
+module.exports=require(7)
+},{}],10:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
