@@ -3,6 +3,7 @@ var sourcemaps = require("gulp-sourcemaps");
 var babel = require("gulp-babel");
 var browserify = require("gulp-browserify");
 var uglify = require("gulp-uglify");
+var stringify = require('stringify');
 var postcss = require("gulp-postcss");
 var jshint = require("gulp-jshint");
 var stylish = require("jshint-stylish");
@@ -23,7 +24,11 @@ gulp.task("babelify", function () {
     .pipe(babel({
       blacklist: ["strict"]
     }))
-    .pipe(browserify())
+    .pipe(browserify({
+      transform: stringify({
+        extensions: ['.tpl'], minify: true
+      })
+    }))
     .pipe(gulp.dest("dist/scripts"))
     .pipe(browserSync.stream());
 });
@@ -38,7 +43,11 @@ gulp.task("babelify:build", function () {
     .pipe(babel({
       blacklist: ["strict"]
     }))
-    .pipe(browserify())
+    .pipe(browserify({
+      transform: stringify({
+        extensions: ['.tpl'], minify: true
+      })
+    }))
     .pipe(uglify())
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/scripts"));
