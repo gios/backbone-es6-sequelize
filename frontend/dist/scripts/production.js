@@ -31,7 +31,10 @@ _backbone2["default"].$ = _jquery2["default"];
   ContactManager.Contact = _backbone2["default"].Model.extend({});
 
   ContactManager.ContactCollection = _backbone2["default"].Collection.extend({
-    model: ContactManager.Contact
+    model: ContactManager.Contact,
+    comparator: function comparator(contact) {
+      return contact.get("firstName") + " " + contact.get("lastName");
+    }
   });
 
   ContactManager.ContactItemView = _backboneMarionette2["default"].ItemView.extend({
@@ -56,17 +59,23 @@ _backbone2["default"].$ = _jquery2["default"];
 
   ContactManager.on("start", function () {
     var contacts = new ContactManager.ContactCollection([{
+      firstName: "Alice",
+      lastName: "Tampen"
+    }, {
       firstName: "Bob",
-      lastName: "Brigham",
-      phoneNumber: "555-0163"
+      lastName: "Brigham"
     }, {
       firstName: "Alice",
-      lastName: "Arten",
-      phoneNumber: "555-0184"
+      lastName: "Artsy"
+    }, {
+      firstName: "Alice",
+      lastName: "Arten"
     }, {
       firstName: "Charlie",
-      lastName: "Campbell",
-      phoneNumber: "555-0129"
+      lastName: "Campbell"
+    }, {
+      firstName: "Alice",
+      lastName: "Smith"
     }]);
 
     var contactsListView = new ContactManager.ContactsView({
