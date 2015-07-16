@@ -18,9 +18,9 @@ var browserSync = require("browser-sync").create();
 gulp.task("babelify", function () {
   "use strict";
   return gulp.src("app/**/*.js")
-    .pipe(concat("production.js"))
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
+    .pipe(concat("production.js"))
     .pipe(babel({
       blacklist: ["strict"]
     }))
@@ -37,9 +37,9 @@ gulp.task("babelify:build", function () {
   "use strict";
   return gulp.src("app/**/*.js")
     .pipe(sourcemaps.init())
-    .pipe(concat("production.min.js"))
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
+    .pipe(concat("production.min.js"))
     .pipe(babel({
       blacklist: ["strict"]
     }))
