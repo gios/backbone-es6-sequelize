@@ -78,29 +78,29 @@ gulp.task("less:build", function () {
 
 gulp.task("browser-sync", function() {
   "use strict";
-    browserSync.init({
-        server: {
-            baseDir: "./",
-            index: "app/index.html"
-        }
-    });
+   browserSync.init({
+     server: {
+       baseDir: "./",
+       index: "app/index.html"
+     }
+   });
+   
+   gulp.watch("app/**/*.js", function(e) {
+     gutil.log(gutil.colors.bgYellow("JS"), ":: File changed ", gutil.colors.yellow(e.path));
+     gulp.start("babelify");
+   });
 
-    gulp.watch("app/**/*.js", function(e) {
-      gutil.log(gutil.colors.bgYellow("JS"), ":: File changed ", gutil.colors.yellow(e.path));
-      gulp.start("babelify");
-    });
+   gulp.watch("app/**/*.less", function(e) {
+     gutil.log(gutil.colors.bgYellow("LESS"), ":: File changed ", gutil.colors.yellow(e.path));
+     gulp.start("less");
+   });
 
-    gulp.watch("app/**/*.less", function(e) {
-      gutil.log(gutil.colors.bgYellow("LESS"), ":: File changed ", gutil.colors.yellow(e.path));
-      gulp.start("less");
-    });
+   gulp.watch("app/templates/*.tpl", function(e) {
+     gutil.log(gutil.colors.bgYellow("TPL"), ":: File changed ", gutil.colors.yellow(e.path));
+     gulp.start("babelify");
+   });
 
-    gulp.watch("app/templates/*.tpl", function(e) {
-      gutil.log(gutil.colors.bgYellow("TPL"), ":: File changed ", gutil.colors.yellow(e.path));
-      gulp.start("babelify");
-    });
-
-    gulp.watch("app/*.html").on("change", browserSync.reload);
+   gulp.watch("app/*.html").on("change", browserSync.reload);
 });
 
 gulp.task("default", ["browser-sync", "babelify", "less"]);
