@@ -4,6 +4,7 @@ import Backbone from "backbone";
 Backbone.$ = $;
 import Marionette from "backbone.marionette";
 import contactListItem from "./templates/contact_list_item.tpl";
+
 $(document).ready(function() {
   "use strict";
 
@@ -13,7 +14,7 @@ $(document).ready(function() {
 
   ContactManager.ContactCollection = Backbone.Collection.extend({
     model: ContactManager.Contact,
-    comparator: function(contact) {
+    comparator: (contact) => {
       return contact.get("firstName") + " " + contact.get("lastName");
     }
   });
