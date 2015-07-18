@@ -4,6 +4,7 @@ var babelify = require("babelify");
 var browserify = require("browserify");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
+var map = require("map-stream");
 var uglify = require("gulp-uglify");
 var stringify = require("stringify");
 var postcss = require("gulp-postcss");
@@ -17,11 +18,19 @@ var gutil = require("gulp-util");
 var concat = require("gulp-concat");
 var browserSync = require("browser-sync").create();
 
+var exitOnJshintError = map(function (file) {
+    if (!file.jshint.success) {
+        gutil.log(gutil.colors.red("JSHint Failed"));
+        process.exit(1);
+    }
+});
+
 gulp.task("js-hint", function () {
   "use strict";
   return gulp.src("app/**/*.js")
     .pipe(jshint())
-    .pipe(jshint.reporter(stylish));
+    .pipe(jshint.reporter(stylish))
+    .pipe(exitOnJshintError);
 });
 
 gulp.task("babelify", function() {
@@ -42,6 +51,7 @@ gulp.task("babelify", function() {
 
 gulp.task("babelify:build", function() {
   "use strict";
+  gutil.log(gutil.colors.bgYellow(":: BUILD JS ::"));
   browserify({ entries: "./app/main.js", debug: true })
   .transform(babelify.configure({
     blacklist: ["strict"],
@@ -74,6 +84,7 @@ gulp.task("less", function () {
 
 gulp.task("less:build", function () {
   "use strict";
+  gutil.log(gutil.colors.bgBlue(":: BUILD LESS ::"));
   return gulp.src("app/styles/**/*.less")
     .pipe(sourcemaps.init())
     .pipe(less({
@@ -91,7 +102,8 @@ gulp.task("browser-sync", function() {
      server: {
        baseDir: "./",
        index: "app/index.html"
-     }
+     },
+     open: "local"
    });
 
    gulp.watch("app/**/*.js", function(e) {
@@ -101,12 +113,12 @@ gulp.task("browser-sync", function() {
    });
 
    gulp.watch("app/**/*.less", function(e) {
-     gutil.log(gutil.colors.bgYellow("LESS"), ":: File changed ", gutil.colors.yellow(e.path));
+     gutil.log(gutil.colors.bgBlue("LESS"), ":: File changed ", gutil.colors.blue(e.path));
      gulp.start("less");
    });
 
    gulp.watch("app/templates/*.tpl", function(e) {
-     gutil.log(gutil.colors.bgYellow("TPL"), ":: File changed ", gutil.colors.yellow(e.path));
+     gutil.log(gutil.colors.bgGreen("TPL"), ":: File changed ", gutil.colors.green(e.path));
      gulp.start("babelify");
    });
 

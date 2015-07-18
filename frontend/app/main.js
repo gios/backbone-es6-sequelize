@@ -35,6 +35,5 @@ class Application {
 }
 
 $(() => {
-  "use strict";
   new Application();
 });
