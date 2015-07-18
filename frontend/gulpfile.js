@@ -29,6 +29,13 @@ gulp.task("js-hint", function () {
   "use strict";
   return gulp.src("app/**/*.js")
     .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
+});
+
+gulp.task("js-hint:build", function () {
+  "use strict";
+  return gulp.src("app/**/*.js")
+    .pipe(jshint())
     .pipe(jshint.reporter(stylish))
     .pipe(exitOnJshintError);
 });
@@ -45,7 +52,7 @@ gulp.task("babelify", function() {
   }))
   .bundle()
   .pipe(source("production.js"))
-  .pipe(gulp.dest("dist/scripts"))
+  .pipe(gulp.dest("dist/src"))
   .pipe(browserSync.stream());
 });
 
@@ -65,11 +72,9 @@ gulp.task("babelify:build", function() {
   .pipe(source("production.min.js"))
   .pipe(buffer())
   .pipe(sourcemaps.init())
-  .pipe(uglify({
-    outSourceMap: "production.min.js.map"
-  }))
+  .pipe(uglify())
   .pipe(sourcemaps.write("."))
-  .pipe(gulp.dest("dist/scripts"));
+  .pipe(gulp.dest("dist/src"));
 });
 
 gulp.task("less", function () {
@@ -102,22 +107,21 @@ gulp.task("browser-sync", function() {
      server: {
        baseDir: "./",
        index: "app/index.html"
-     },
-     open: "local"
+     }
    });
 
-   gulp.watch("app/**/*.js", function(e) {
+   gulp.watch("app/src/**/*.js", function(e) {
      gutil.log(gutil.colors.bgYellow("JS"), ":: File changed ", gutil.colors.yellow(e.path));
      gulp.start("js-hint");
      gulp.start("babelify");
    });
 
-   gulp.watch("app/**/*.less", function(e) {
+   gulp.watch("app/styles/**/*.less", function(e) {
      gutil.log(gutil.colors.bgBlue("LESS"), ":: File changed ", gutil.colors.blue(e.path));
      gulp.start("less");
    });
 
-   gulp.watch("app/templates/*.tpl", function(e) {
+   gulp.watch("app/src/templates/*.tpl", function(e) {
      gutil.log(gutil.colors.bgGreen("TPL"), ":: File changed ", gutil.colors.green(e.path));
      gulp.start("babelify");
    });
@@ -125,5 +129,5 @@ gulp.task("browser-sync", function() {
    gulp.watch("app/*.html").on("change", browserSync.reload);
 });
 
-gulp.task("default", ["browser-sync", "js-hint", "babelify", "less"]);
-gulp.task("build", ["js-hint", "babelify:build", "less:build"]);
+gulp.task("serve", ["browser-sync", "js-hint", "babelify", "less"]);
+gulp.task("build", ["js-hint:build", "babelify:build", "less:build"]);
