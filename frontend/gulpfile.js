@@ -1,9 +1,11 @@
 var gulp = require("gulp");
 var sourcemaps = require("gulp-sourcemaps");
-var babel = require("gulp-babel");
-var browserify = require("gulp-browserify");
+var babelify = require("babelify");
+var browserify = require("browserify");
+var source = require("vinyl-source-stream");
+var buffer = require("vinyl-buffer");
 var uglify = require("gulp-uglify");
-var stringify = require('stringify');
+var stringify = require("stringify");
 var postcss = require("gulp-postcss");
 var jshint = require("gulp-jshint");
 var stylish = require("jshint-stylish");
@@ -15,42 +17,49 @@ var gutil = require("gulp-util");
 var concat = require("gulp-concat");
 var browserSync = require("browser-sync").create();
 
-gulp.task("babelify", function () {
+gulp.task("js-hint", function () {
   "use strict";
   return gulp.src("app/**/*.js")
     .pipe(jshint())
-    .pipe(jshint.reporter(stylish))
-    .pipe(concat("production.js"))
-    .pipe(babel({
-      blacklist: ["strict"]
-    }))
-    .pipe(browserify({
-      transform: stringify({
-        extensions: ['.tpl'], minify: true
-      })
-    }))
-    .pipe(gulp.dest("dist/scripts"))
-    .pipe(browserSync.stream());
+    .pipe(jshint.reporter(stylish));
 });
 
-gulp.task("babelify:build", function () {
+gulp.task("babelify", function() {
   "use strict";
-  return gulp.src("app/**/*.js")
-    .pipe(sourcemaps.init())
-    .pipe(jshint())
-    .pipe(jshint.reporter(stylish))
-    .pipe(concat("production.min.js"))
-    .pipe(babel({
-      blacklist: ["strict"]
-    }))
-    .pipe(browserify({
-      transform: stringify({
-        extensions: ['.tpl'], minify: true
-      })
-    }))
-    .pipe(uglify())
-    .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist/scripts"));
+  browserify({ entries: "./app/main.js", debug: true })
+  .transform(babelify.configure({
+    blacklist: ["strict"]
+  }))
+  .transform(babelify)
+  .transform(stringify({
+    extensions: [".tpl"], minify: true
+  }))
+  .bundle()
+  .pipe(source("production.js"))
+  .pipe(gulp.dest("dist/scripts"))
+  .pipe(browserSync.stream());
+});
+
+gulp.task("babelify:build", function() {
+  "use strict";
+  browserify({ entries: "./app/main.js", debug: true })
+  .transform(babelify.configure({
+    blacklist: ["strict"],
+    sourceMaps: "inline"
+  }))
+  .transform(babelify)
+  .transform(stringify({
+    extensions: [".tpl"], minify: true
+  }))
+  .bundle()
+  .pipe(source("production.min.js"))
+  .pipe(buffer())
+  .pipe(sourcemaps.init())
+  .pipe(uglify({
+    outSourceMap: "production.min.js.map"
+  }))
+  .pipe(sourcemaps.write("."))
+  .pipe(gulp.dest("dist/scripts"));
 });
 
 gulp.task("less", function () {
@@ -84,9 +93,10 @@ gulp.task("browser-sync", function() {
        index: "app/index.html"
      }
    });
-   
+
    gulp.watch("app/**/*.js", function(e) {
      gutil.log(gutil.colors.bgYellow("JS"), ":: File changed ", gutil.colors.yellow(e.path));
+     gulp.start("js-hint");
      gulp.start("babelify");
    });
 
@@ -103,5 +113,5 @@ gulp.task("browser-sync", function() {
    gulp.watch("app/*.html").on("change", browserSync.reload);
 });
 
-gulp.task("default", ["browser-sync", "babelify", "less"]);
-gulp.task("build", ["babelify:build", "less:build"]);
+gulp.task("default", ["browser-sync", "js-hint", "babelify", "less"]);
+gulp.task("build", ["js-hint", "babelify:build", "less:build"]);
