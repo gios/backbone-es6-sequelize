@@ -110,7 +110,7 @@ gulp.task("browser-sync", function() {
      }
    });
 
-   gulp.watch("app/src/**/*.js", function(e) {
+   gulp.watch("app/**/*.js", function(e) {
      gutil.log(gutil.colors.bgYellow("JS"), ":: File changed ", gutil.colors.yellow(e.path));
      gulp.start("js-hint");
      gulp.start("babelify");

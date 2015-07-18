@@ -1,5 +1,4 @@
 /*jshint esnext: true */
-import $ from "jquery";
 import Backbone from "backbone";
 import _ from "lodash";
 import loginTemplate from "../templates/LoginTemplate.tpl";

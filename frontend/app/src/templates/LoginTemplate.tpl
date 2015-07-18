@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col s12 m7">
+  <div class="col s12 m8 offset-m2 l4 offset-l4">
     <div class="card">
       <div class="card-image">
         <img src="http://materializecss.com/images/sample-1.jpg">

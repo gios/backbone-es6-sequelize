@@ -15,7 +15,7 @@ class Router extends Backbone.Router {
     }
 
     home () {
-        $("#app").html(new LoginView().render().$el);
+        $("main").html(new LoginView().render().$el);
         console.log("Home");
     }
 
