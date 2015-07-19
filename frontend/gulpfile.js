@@ -52,6 +52,9 @@ gulp.task("babelify", function() {
   }))
   .bundle()
   .pipe(source("production.js"))
+  .pipe(buffer())
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(sourcemaps.write("."))
   .pipe(gulp.dest("dist/src"))
   .pipe(browserSync.stream());
 });
@@ -71,18 +74,20 @@ gulp.task("babelify:build", function() {
   .bundle()
   .pipe(source("production.min.js"))
   .pipe(buffer())
-  .pipe(sourcemaps.init())
+  .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(uglify())
   .pipe(sourcemaps.write("."))
-  .pipe(gulp.dest("dist/src"));
+  .pipe(gulp.dest("dist/build/src"));
 });
 
 gulp.task("less", function () {
   "use strict";
   return gulp.src("app/styles/**/*.less")
+    .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(concat("production.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
+    .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/styles"))
     .pipe(browserSync.stream());
 });
@@ -98,7 +103,7 @@ gulp.task("less:build", function () {
     .pipe(concat("production.min.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
     .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist/styles"));
+    .pipe(gulp.dest("dist/build/styles"));
 });
 
 gulp.task("browser-sync", function() {

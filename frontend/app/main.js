@@ -2,6 +2,8 @@
 import $ from "jquery";
 import Backbone from "backbone";
 import Router from "./src/routers/router.js";
+import bootstrap from "bootstrap";
+console.log(bootstrap);
 
 class Application {
 

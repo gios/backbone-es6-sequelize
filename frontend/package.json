@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "backbone": "^1.2.1",
+    "bootstrap": "^3.3.5",
     "jquery": "^2.1.4",
-    "lodash": "^3.10.0",
-    "materialize-css": "^0.96.1"
+    "lodash": "^3.10.0"
   }
 }
