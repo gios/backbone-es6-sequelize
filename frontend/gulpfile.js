@@ -1,21 +1,62 @@
-var gulp = require("gulp");
-var sourcemaps = require("gulp-sourcemaps");
-var babel = require("gulp-babel");
-var browserify = require("gulp-browserify");
-var buffer = require("vinyl-buffer");
-var map = require("map-stream");
-var uglify = require("gulp-uglify");
-var stringify = require("stringify");
-var postcss = require("gulp-postcss");
-var jshint = require("gulp-jshint");
-var stylish = require("jshint-stylish");
-var LessPluginCleanCSS = require("less-plugin-clean-css");
-var cleancss = new LessPluginCleanCSS({ advanced: true });
-var autoprefixer = require("autoprefixer-core");
-var less = require("gulp-less");
-var gutil = require("gulp-util");
-var concat = require("gulp-concat");
-var browserSync = require("browser-sync").create();
+var gulp = require("gulp"),
+    sourcemaps = require("gulp-sourcemaps"),
+    babel = require("gulp-babel"),
+    browserify = require("gulp-browserify"),
+    buffer = require("vinyl-buffer"),
+    map = require("map-stream"),
+    uglify = require("gulp-uglify"),
+    stringify = require("stringify"),
+    postcss = require("gulp-postcss"),
+    jshint = require("gulp-jshint"),
+    stylish = require("jshint-stylish"),
+    LessPluginCleanCSS = require("less-plugin-clean-css"),
+    cleancss = new LessPluginCleanCSS({ advanced: true }),
+    autoprefixer = require("autoprefixer-core"),
+    less = require("gulp-less"),
+    gutil = require("gulp-util"),
+    concat = require("gulp-concat"),
+    browserSync = require("browser-sync").create(),
+    vendor = require("./vendorPaths.js");
+
+gulp.task("vendor-js", function() {
+  "use strict";
+  gutil.log(gutil.colors.bgMagenta(":: BUILD VENDOR JS ::"));
+  return gulp.src(vendor.js.standartPaths())
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(concat("vendor.js"))
+  .pipe(sourcemaps.write("."))
+  .pipe(gulp.dest("dist/vendor"));
+});
+
+gulp.task("vendor-js:build", function() {
+  "use strict";
+  gutil.log(gutil.colors.bgMagenta(":: BUILD MINIFY VENDOR JS ::"));
+  return gulp.src(vendor.js.minifyPaths())
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(concat("vendor.min.js"))
+  .pipe(sourcemaps.write("."))
+  .pipe(gulp.dest("dist/vendor"));
+});
+
+gulp.task("vendor-css", function() {
+  "use strict";
+  gutil.log(gutil.colors.bgMagenta(":: BUILD VENDOR CSS ::"));
+  return gulp.src(vendor.css.standartPaths())
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(concat("vendor.css"))
+  .pipe(sourcemaps.write("."))
+  .pipe(gulp.dest("dist/vendor"));
+});
+
+gulp.task("vendor-css:build", function() {
+  "use strict";
+  gutil.log(gutil.colors.bgMagenta(":: BUILD MINIFY VENDOR CSS ::"));
+  return gulp.src(vendor.css.minifyPaths())
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(concat("vendor.min.css"))
+  .pipe(sourcemaps.write("."))
+  .pipe(gulp.dest("dist/vendor"));
+});
 
 var checkJsHint = map(function (file) {
     "use strict";
@@ -48,7 +89,7 @@ gulp.task("js-hint:build", function () {
     .pipe(checkJsHintBuild);
 });
 
-gulp.task("babelify", function() {
+gulp.task("babelify", ["vendor-js"], function() {
   "use strict";
   return gulp.src("app/**/*.js")
   .pipe(sourcemaps.init({loadMaps: true}))
@@ -67,7 +108,7 @@ gulp.task("babelify", function() {
   .pipe(browserSync.stream());
 });
 
-gulp.task("babelify:build", function() {
+gulp.task("babelify:build", ["vendor-js:build"], function() {
   "use strict";
   gutil.log(gutil.colors.bgYellow(":: BUILD JS ::"));
   return gulp.src("app/**/*.js")
@@ -87,7 +128,7 @@ gulp.task("babelify:build", function() {
   .pipe(gulp.dest("dist/build/src"));
 });
 
-gulp.task("less", function () {
+gulp.task("less", ["vendor-css"], function () {
   "use strict";
   return gulp.src("app/styles/**/*.less")
     .pipe(sourcemaps.init())
@@ -99,7 +140,7 @@ gulp.task("less", function () {
     .pipe(browserSync.stream());
 });
 
-gulp.task("less:build", function () {
+gulp.task("less:build", ["vendor-css:build"], function () {
   "use strict";
   gutil.log(gutil.colors.bgBlue(":: BUILD LESS ::"));
   return gulp.src("app/styles/**/*.less")
