@@ -1,8 +1,7 @@
 var gulp = require("gulp");
 var sourcemaps = require("gulp-sourcemaps");
-var babelify = require("babelify");
-var browserify = require("browserify");
-var source = require("vinyl-source-stream");
+var babel = require("gulp-babel");
+var browserify = require("gulp-browserify");
 var buffer = require("vinyl-buffer");
 var map = require("map-stream");
 var uglify = require("gulp-uglify");
@@ -18,9 +17,17 @@ var gutil = require("gulp-util");
 var concat = require("gulp-concat");
 var browserSync = require("browser-sync").create();
 
-var exitOnJshintError = map(function (file) {
+var checkJsHint = map(function (file) {
+    "use strict";
     if (!file.jshint.success) {
-        gutil.log(gutil.colors.red("JSHint Failed"));
+        gutil.log(gutil.colors.red("JSHint Failed " + file.path));
+    }
+});
+
+var checkJsHintBuild = map(function (file) {
+    "use strict";
+    if (!file.jshint.success) {
+        gutil.log(gutil.colors.red("JSHint Failed " + file.path));
         process.exit(1);
     }
 });
@@ -29,7 +36,8 @@ gulp.task("js-hint", function () {
   "use strict";
   return gulp.src("app/**/*.js")
     .pipe(jshint())
-    .pipe(jshint.reporter(stylish));
+    .pipe(jshint.reporter(stylish))
+    .pipe(checkJsHint);
 });
 
 gulp.task("js-hint:build", function () {
@@ -37,23 +45,23 @@ gulp.task("js-hint:build", function () {
   return gulp.src("app/**/*.js")
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
-    .pipe(exitOnJshintError);
+    .pipe(checkJsHintBuild);
 });
 
 gulp.task("babelify", function() {
   "use strict";
-  browserify({ entries: "./app/main.js", debug: true })
-  .transform(babelify.configure({
+  return gulp.src("app/**/*.js")
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(babel({
     blacklist: ["strict"]
   }))
-  .transform(babelify)
-  .transform(stringify({
-    extensions: [".tpl"], minify: true
+  .pipe(concat("production.js"))
+  .pipe(browserify({
+    transform: stringify({
+      extensions: [".tpl"], minify: true
+    })
   }))
-  .bundle()
-  .pipe(source("production.js"))
   .pipe(buffer())
-  .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(sourcemaps.write("."))
   .pipe(gulp.dest("dist/src"))
   .pipe(browserSync.stream());
@@ -62,19 +70,18 @@ gulp.task("babelify", function() {
 gulp.task("babelify:build", function() {
   "use strict";
   gutil.log(gutil.colors.bgYellow(":: BUILD JS ::"));
-  browserify({ entries: "./app/main.js", debug: true })
-  .transform(babelify.configure({
-    blacklist: ["strict"],
-    sourceMaps: "inline"
-  }))
-  .transform(babelify)
-  .transform(stringify({
-    extensions: [".tpl"], minify: true
-  }))
-  .bundle()
-  .pipe(source("production.min.js"))
-  .pipe(buffer())
+  return gulp.src("app/**/*.js")
   .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(babel({
+    blacklist: ["strict"]
+  }))
+  .pipe(concat("production.min.js"))
+  .pipe(browserify({
+    transform: stringify({
+      extensions: [".tpl"], minify: true
+    })
+  }))
+  .pipe(buffer())
   .pipe(uglify())
   .pipe(sourcemaps.write("."))
   .pipe(gulp.dest("dist/build/src"));
