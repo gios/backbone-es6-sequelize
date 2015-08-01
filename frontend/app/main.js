@@ -1,3 +1,15 @@
-import a from "./src/templates/LoginTemplate.tpl";
-console.log(a);
-console.log("Hello");
+import Router from './src/routes';
+
+class Application {
+
+    constructor () {
+        new Router();
+        Backbone.history.start();
+    }
+
+}
+
+this.$(() => {
+    "use strict";
+    new Application();
+});
