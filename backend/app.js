@@ -5,7 +5,6 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
-var flash = require('connect-flash');
 
 var getSQL = require("./config/database_connector");
 require("./config/passport")(passport);
@@ -13,25 +12,23 @@ require("./config/passport")(passport);
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(bodyParser());
-app.set('view engine', 'ejs');
 
-app.use(session({ secret: "hello" }));
+app.use(session({ secret: "intime" }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+};
+
+app.use(allowCrossDomain);
 
 require("./route.js")(app, passport);
 
-app.get("/", function (req, res) {
-  res.send("Hello World!");
-});
-
-app.get("/data", function(req, res) {
-  getSQL("SELECT * FROM users", function(err, result) {
-    res.send(result);
-  });
-});
-
-app.listen(3000, function () {
-  console.log("Intime listening at localhost:3000");
+app.listen(9000, function () {
+  console.log("Intime listening at localhost:9000");
 });

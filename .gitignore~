@@ -31,4 +31,3 @@ node_modules
 public/bundle.js
 dist
 bower_components
-typings

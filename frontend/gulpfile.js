@@ -82,7 +82,7 @@ gulp.task("js-hint:build", function () {
     .pipe(checkJsHintBuild);
 });
 
-gulp.task("babelify", ["vendor-js"], function() {
+gulp.task("babelify", function() {
   "use strict";
   browserify({ entries: "./app/main.js", debug: true })
   .transform(babelify.configure({
@@ -101,7 +101,7 @@ gulp.task("babelify", ["vendor-js"], function() {
   .pipe(browserSync.stream());
 });
 
-gulp.task("babelify:build", ["vendor-js:build"], function() {
+gulp.task("babelify:build", function() {
   "use strict";
   gutil.log(gutil.colors.bgYellow(":: BUILD JS ::"));
   browserify({ entries: "./app/main.js", debug: true })
@@ -167,7 +167,7 @@ gulp.task("browser-sync", function() {
      gulp.start("less");
    });
 
-   gulp.watch("app/src/templates/*.tpl", function(e) {
+   gulp.watch("app/src/**/*.tpl", function(e) {
      gutil.log(gutil.colors.bgGreen("TPL"), ":: File changed ", gutil.colors.green(e.path));
      gulp.start("babelify");
    });
@@ -175,5 +175,5 @@ gulp.task("browser-sync", function() {
    gulp.watch("app/*.html").on("change", browserSync.reload);
 });
 
-gulp.task("serve", ["browser-sync", "js-hint", "babelify", "less"]);
-gulp.task("build", ["js-hint:build", "babelify:build", "less:build"]);
+gulp.task("serve", ["browser-sync", "vendor-js", "js-hint", "babelify", "less"]);
+gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "less:build"]);

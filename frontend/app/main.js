@@ -9,7 +9,7 @@ class Application {
 
 }
 
-this.$(() => {
+$(() => {
     "use strict";
     new Application();
 });
