@@ -23,10 +23,15 @@ class LoginView extends Backbone.View {
         let options = {
             contentType: "application/json",
             type: "POST",
-            data: JSON.stringify({username, password})
+            data: JSON.stringify({username, password}),
+            error: function(model, response) {
+                console.log("Error", model, response);
+            },
+            success: function(model, response) {
+                console.log("Success", model, response);
+            }
         };
         this.model.fetch(options);
-        console.log(this.model);
     }
 
     render() {
