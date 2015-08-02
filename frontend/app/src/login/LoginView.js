@@ -5,29 +5,28 @@ class LoginView extends Backbone.View {
 
     constructor() {
         super();
-        this.setElement($('#login'), true);
-        this.events = {
-            "click #sign-in": function(event) {
-                event.preventDefault();
-                console.log("hello");
-            }
-        };
+        this.setElement($("#login"), true);
         this.template = _.template(loginTemplate);
         this.model = new loginModel();
     }
 
+    initialize() {
+        this.events = {
+            "click #sign-in": "checkLogin"
+        };
+    }
+
     checkLogin(event) {
-        console.log(event);
         event.preventDefault();
-        let username = this.$el.find("#input-name");
-        let password = this.$el.find("#input-password");
+        let username = this.$el.find("#input-name").val();
+        let password = this.$el.find("#input-password").val();
         let options = {
             contentType: "application/json",
             type: "POST",
             data: JSON.stringify({username, password})
         };
         this.model.fetch(options);
-        console.log("CLICKED");
+        console.log(this.model);
     }
 
     render() {

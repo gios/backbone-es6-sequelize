@@ -1,25 +1,12 @@
 module.exports = function(app, passport) {
 
-	app.get('/', function(req, res) {
-		res.render('index.ejs');
-	});
-
-	app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile',
-            failureRedirect : '/login',
-            failureFlash : true
-		}),
-        function(req, res) {
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
-            } else {
-              req.session.cookie.expires = false;
-            }
-        res.redirect('/');
-  });
+	app.post('/login', passport.authenticate('local-login'),
+		function(req, res) {
+			res.end(JSON.stringify(req.user));
+  	});
 
 	app.get('/profile', isLoggedIn, function(req, res) {
-		console.log(req.user);
+		res.end(JSON.stringify(req.user));
 	});
 
 	app.get('/logout', function(req, res) {

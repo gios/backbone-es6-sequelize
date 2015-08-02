@@ -16,6 +16,7 @@
     "browserify": "^11.0.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
+    "gulp-inject": "^1.5.0",
     "gulp-jshint": "^1.11.2",
     "gulp-less": "^3.0.3",
     "gulp-postcss": "^5.1.9",

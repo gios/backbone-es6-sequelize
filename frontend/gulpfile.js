@@ -3,11 +3,12 @@ var gulp = require("gulp"),
     babelify = require("babelify"),
     browserify = require("browserify"),
     buffer = require("vinyl-buffer"),
-    source = require('vinyl-source-stream'),
+    source = require("vinyl-source-stream"),
     map = require("map-stream"),
     uglify = require("gulp-uglify"),
     stringify = require("stringify"),
     postcss = require("gulp-postcss"),
+    inject = require("gulp-inject"),
     jshint = require("gulp-jshint"),
     stylish = require("jshint-stylish"),
     LessPluginCleanCSS = require("less-plugin-clean-css"),
@@ -18,6 +19,15 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     browserSync = require("browser-sync").create(),
     vendor = require("./vendorPaths.js");
+
+gulp.task("inject-paths", function() {
+  "use strict";
+  var target = gulp.src("./app/index.html");
+  var sources = gulp.src(["./dist/vendor/*.js", "./dist/vendor/*.css", "./dist/src/*.js", "./dist/styles/*.css"], {read: false});
+
+  return target.pipe(inject(sources, {ignorePath: "dist"}))
+    .pipe(gulp.dest("./dist"));
+});
 
 gulp.task("vendor-js", function() {
   "use strict";
@@ -173,7 +183,11 @@ gulp.task("browser-sync", function() {
    });
 
    gulp.watch("app/*.html").on("change", browserSync.reload);
+   gulp.watch("app/*.html").on("change", function() {
+       browserSync.reload();
+       gulp.start("inject-paths");
+   });
 });
 
-gulp.task("serve", ["browser-sync", "vendor-js", "js-hint", "babelify", "less"]);
-gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "less:build"]);
+gulp.task("serve", ["browser-sync", "vendor-js", "js-hint", "babelify", "less", "inject-paths"]);
+gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "less:build", "inject-paths"]);
