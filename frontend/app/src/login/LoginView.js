@@ -1,5 +1,5 @@
 import loginTemplate from "./LoginTemplate.tpl";
-import loginModel from "./LoginModel.js";
+import LoginModel from "./LoginModel.js";
 
 class LoginView extends Backbone.View {
 
@@ -7,7 +7,7 @@ class LoginView extends Backbone.View {
         super();
         this.setElement($("#login"), true);
         this.template = _.template(loginTemplate);
-        this.model = new loginModel();
+        this.model = new LoginModel();
     }
 
     initialize() {

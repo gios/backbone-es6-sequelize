@@ -11,10 +11,8 @@ var gulp = require("gulp"),
     inject = require("gulp-inject"),
     jshint = require("gulp-jshint"),
     stylish = require("jshint-stylish"),
-    LessPluginCleanCSS = require("less-plugin-clean-css"),
-    cleancss = new LessPluginCleanCSS({ advanced: true }),
     autoprefixer = require("autoprefixer-core"),
-    less = require("gulp-less"),
+    sass = require("gulp-sass"),
     gutil = require("gulp-util"),
     concat = require("gulp-concat"),
     browserSync = require("browser-sync").create(),
@@ -131,11 +129,11 @@ gulp.task("babelify:build", function() {
   .pipe(gulp.dest("dist/build/src"));
 });
 
-gulp.task("less", ["vendor-css"], function () {
+gulp.task("sass", ["vendor-css"], function () {
   "use strict";
-  return gulp.src("app/styles/**/*.less")
+  return gulp.src("app/styles/**/*.scss")
     .pipe(sourcemaps.init())
-    .pipe(less())
+    .pipe(sass().on("error", sass.logError))
     .pipe(concat("production.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
     .pipe(sourcemaps.write("."))
@@ -143,14 +141,12 @@ gulp.task("less", ["vendor-css"], function () {
     .pipe(browserSync.stream());
 });
 
-gulp.task("less:build", ["vendor-css:build"], function () {
+gulp.task("sass:build", ["vendor-css:build"], function () {
   "use strict";
-  gutil.log(gutil.colors.bgBlue(":: BUILD LESS ::"));
-  return gulp.src("app/styles/**/*.less")
+  gutil.log(gutil.colors.bgBlue(":: BUILD SASS ::"));
+  return gulp.src("app/styles/**/*.scss")
     .pipe(sourcemaps.init())
-    .pipe(less({
-      plugins: [cleancss]
-    }))
+    .pipe(sass({outputStyle: "compressed"}))
     .pipe(concat("production.min.css"))
     .pipe(postcss([ autoprefixer({ browsers: ["last 2 versions"] }) ]))
     .pipe(sourcemaps.write("."))
@@ -172,9 +168,9 @@ gulp.task("browser-sync", function() {
      gulp.start("babelify");
    });
 
-   gulp.watch("app/styles/**/*.less", function(e) {
-     gutil.log(gutil.colors.bgBlue("LESS"), ":: File changed ", gutil.colors.blue(e.path));
-     gulp.start("less");
+   gulp.watch("app/styles/**/*.scss", function(e) {
+     gutil.log(gutil.colors.bgBlue("SASS"), ":: File changed ", gutil.colors.blue(e.path));
+     gulp.start("sass");
    });
 
    gulp.watch("app/src/**/*.tpl", function(e) {
@@ -189,5 +185,5 @@ gulp.task("browser-sync", function() {
    });
 });
 
-gulp.task("serve", ["browser-sync", "vendor-js", "js-hint", "babelify", "less", "inject-paths"]);
-gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "less:build", "inject-paths"]);
+gulp.task("serve", ["browser-sync", "vendor-js", "js-hint", "babelify", "sass", "inject-paths"]);
+gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "sass:build", "inject-paths"]);
