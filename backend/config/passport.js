@@ -23,7 +23,6 @@ module.exports = function(passport) {
 		passwordField: "password",
 		passReqToCallback: true
 	}, function(req, username, password, done) {
-		console.log(username, password);
 		connection.query("SELECT * FROM users WHERE username = ?", [username], function(err, rows) {
 			if (err) return done(err);
 			if (!rows.length) {

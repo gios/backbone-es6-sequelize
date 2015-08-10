@@ -4,6 +4,5 @@ module.exports = {
     "user": "root",
     "password": "0987654321"
   },
-	"database": "intime",
-  "users_table": "users"
+	"database": "intime"
 };

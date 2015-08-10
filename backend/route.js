@@ -1,11 +1,14 @@
-module.exports = function(app, passport) {
+var UserController = require('./controllers/users.js');
+module.exports = function(app, passport, getSQL) {
 
 	app.get("/error_login", function(req, res) {
 		res.end(req.flash("loginMessage").toString());
 	});
 
 	app.get("/session", function(req, res) {
-		res.end(JSON.stringify(req.user));
+		UserController.getSessionCredentials(req.user.type_id, function(data) {
+			console.log(data);
+		});
 	});
 
 	app.post("/login", passport.authenticate("local-login", {

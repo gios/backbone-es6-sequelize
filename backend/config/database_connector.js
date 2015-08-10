@@ -11,7 +11,10 @@ function getSQL(query, callback) {
 
   connection.connect();
   var json = "";
-  var runningQuery = query || "SELECT 1 + 1 AS solution";
+  var runningQuery = query || "SELECT users.id, users.username, type.group, users.chapter_id " +
+                               "FROM users " +
+                               "INNER JOIN type " +
+                               "ON users.type_id=type.id;";
 
   connection.query(runningQuery, function(err, rows, fields) {
     if (err) return callback(err, null);

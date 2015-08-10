@@ -6,7 +6,6 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
-
 var getSQL = require("./config/database_connector");
 require("./config/passport")(passport);
 
@@ -27,7 +26,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-require("./route.js")(app, passport);
+require("./route.js")(app, passport, getSQL);
 
 app.listen(3000, function () {
   console.log("Intime listening at localhost:3000");
