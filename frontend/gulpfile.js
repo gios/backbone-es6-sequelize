@@ -156,10 +156,7 @@ gulp.task("sass:build", ["vendor-css:build"], function () {
 gulp.task("browser-sync", function() {
   "use strict";
    browserSync.init({
-     server: {
-       baseDir: "./",
-       index: "app/index.html"
-     }
+        proxy: "localhost:3000"
    });
 
    gulp.watch("app/**/*.js", function(e) {
