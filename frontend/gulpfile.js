@@ -16,6 +16,7 @@ var gulp = require("gulp"),
     gutil = require("gulp-util"),
     concat = require("gulp-concat"),
     browserSync = require("browser-sync").create(),
+    _ = require("underscore"),
     vendor = require("./vendorPaths.js");
 
 gulp.task("inject-paths", function() {
@@ -44,7 +45,7 @@ gulp.task("vendor-js:build", function() {
   .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(concat("vendor.min.js"))
   .pipe(sourcemaps.write("."))
-  .pipe(gulp.dest("dist/vendor"));
+  .pipe(gulp.dest("dist/build/vendor"));
 });
 
 gulp.task("vendor-css", function() {
@@ -64,7 +65,7 @@ gulp.task("vendor-css:build", function() {
   .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(concat("vendor.min.css"))
   .pipe(sourcemaps.write("."))
-  .pipe(gulp.dest("dist/vendor"));
+  .pipe(gulp.dest("dist/build/vendor"));
 });
 
 var checkJsHintBuild = map(function (file) {
@@ -182,5 +183,9 @@ gulp.task("browser-sync", function() {
    });
 });
 
-gulp.task("serve", ["browser-sync", "vendor-js", "js-hint", "babelify", "sass", "inject-paths"]);
-gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "sass:build", "inject-paths"]);
+gulp.task("start", ["browser-sync", "vendor-js", "js-hint", "babelify", "sass"], function(e) {
+    _.delay(function() {
+        gulp.start("inject-paths");
+    }, 500);
+});
+gulp.task("build", ["vendor-js:build", "js-hint:build", "babelify:build", "sass:build"]);

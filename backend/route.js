@@ -6,8 +6,16 @@ module.exports = function(app, passport, getSQL) {
 	});
 
 	app.get("/session", function(req, res) {
-		UserController.getSessionCredentials(req.user.type_id, function(data) {
+		var userData = {};
+		userData.user_id = req.user.id;
+		userData.type_id = req.user.type_id;
+		res.header("Content-Type", "application/json; charset=utf-8");
+		UserController.getSessionCredentials(userData, function(err, data) {
+			if (err) {
+				return err;
+			}
 			console.log(data);
+			res.end(JSON.stringify(data));
 		});
 	});
 

@@ -1,0 +1,22 @@
+{
+  "name": "intime-frontend",
+  "version": "0.0.1",
+  "homepage": "https://github.com/gios/intime",
+  "authors": [
+    "Gios"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "backbone": "~1.2.1",
+    "jquery": "~2.1.4",
+    "underscore": "~1.8.3"
+  }
+}
