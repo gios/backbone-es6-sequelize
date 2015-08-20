@@ -1,20 +1,18 @@
-var UserController = require('./controllers/users.js');
-module.exports = function(app, passport, getSQL) {
+var UserMiddle = require('./middleware/UserMiddle.js');
+
+module.exports = function(app, passport) {
 
 	app.get("/error_login", function(req, res) {
 		res.end(req.flash("loginMessage").toString());
 	});
 
-	app.get("/session", function(req, res) {
+	app.get("/session", isLoggedIn, function(req, res) {
 		var userData = {};
 		userData.user_id = req.user.id;
 		userData.type_id = req.user.type_id;
 		res.header("Content-Type", "application/json; charset=utf-8");
-		UserController.getSessionCredentials(userData, function(err, data) {
-			if (err) {
-				return err;
-			}
-			console.log(data);
+		UserMiddle.getSessionCredentials(userData, function(err, data) {
+			if (err) return err;
 			res.end(JSON.stringify(data));
 		});
 	});

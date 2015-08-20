@@ -1,12 +1,24 @@
-var express = require("express");
-var app = express();
-var passport = require("passport");
-var flash = require('connect-flash');
-var morgan = require("morgan");
-var cookieParser = require("cookie-parser");
-var bodyParser = require("body-parser");
-var session = require("express-session");
-var getSQL = require("./config/database_connector");
+var express = require("express"),
+    app = express(),
+    passport = require("passport"),
+    flash = require('connect-flash'),
+    morgan = require("morgan"),
+    cookieParser = require("cookie-parser"),
+    bodyParser = require("body-parser"),
+    session = require("express-session"),
+    Sequelize = require('sequelize');
+
+global.sequelize = new Sequelize('intime', 'root', '0987654321', {
+	host: 'localhost',
+  	dialect: 'mysql',
+
+  	pool: {
+    	max: 5,
+    	min: 0,
+    	idle: 10000
+  	}
+});
+
 require("./config/passport")(passport);
 
 app.use(express.static("../frontend/dist"));
@@ -26,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-require("./route.js")(app, passport, getSQL);
+require("./route.js")(app, passport);
 
 app.listen(3000, function () {
   console.log("Intime listening at localhost:3000");

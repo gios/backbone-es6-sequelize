@@ -1,10 +1,5 @@
-var LocalStrategy   = require("passport-local").Strategy;
-
-var mysql = require("mysql");
-var dbconfig = require("./database_credentials");
-var connection = mysql.createConnection(dbconfig.connection);
-
-connection.query("USE " + dbconfig.database);
+var LocalStrategy = require("passport-local").Strategy,
+	User = require("../db/User.js");
 
 module.exports = function(passport) {
 
@@ -13,9 +8,11 @@ module.exports = function(passport) {
 	});
 
 	passport.deserializeUser(function(id, done) {
-		connection.query("SELECT * FROM users WHERE id = ? ", [id], function(err, rows) {
-			done(err, rows[0]);
-		});
+		User.find({ where: { id: id } }).then(function(user) {
+	    	done(null, user);
+	  	}).catch(function(err){
+	    	done(err, null);
+	  	});
 	});
 
 	passport.use("local-login", new LocalStrategy({
@@ -23,15 +20,16 @@ module.exports = function(passport) {
 		passwordField: "password",
 		passReqToCallback: true
 	}, function(req, username, password, done) {
-		connection.query("SELECT * FROM users WHERE username = ?", [username], function(err, rows) {
-			if (err) return done(err);
-			if (!rows.length) {
-				return done(null, false, req.flash("loginMessage", "No user found."));
-			}
-			if (password !== rows[0].password) {
-				return done(null, false, req.flash("loginMessage", "Oops! Wrong password."));
-      }
-			return done(null, rows[0]);
-		});
+		User.find({ where: { username: username }}).then(function(user) {
+      		if (!user) {
+        		done(null, false, req.flash("loginMessage", "No user found."));
+      		} else if (password != user.password) {
+        		done(null, false, req.flash("loginMessage", "Oops! Wrong password."));
+      		} else {
+        		done(null, user);
+      		}
+    	}).catch(function(err){
+      		done(err);
+    	});
 	}));
 };
