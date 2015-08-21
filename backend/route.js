@@ -1,4 +1,4 @@
-var UserMiddle = require('./middleware/UserMiddle.js');
+var User = require('./controllers/User.js');
 
 module.exports = function(app, passport) {
 

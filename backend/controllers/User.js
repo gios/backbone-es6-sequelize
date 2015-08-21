@@ -1,4 +1,4 @@
-var User = require("../db/User.js");
+var User = require("../models/User.js");
 
 function getSessionCredentials(userData, callback) {
     User.find({ where: { id: userData.user_id }}).then(function(user) {
