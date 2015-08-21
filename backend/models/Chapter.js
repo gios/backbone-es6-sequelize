@@ -8,4 +8,7 @@ var User = sequelize.define('User',
     freezeTableName: true
 });
 
+User.sync();
+
+User.upsert({ username: "admin", password: "foo"});
 module.exports = User;

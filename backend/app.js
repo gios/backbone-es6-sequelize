@@ -20,6 +20,7 @@ global.sequelize = new Sequelize('intime', 'root', '0987654321', {
 });
 
 require("./config/passport")(passport);
+require("./models/Group.js");
 
 app.use(express.static("../frontend/dist"));
 app.use(morgan("dev"));
