@@ -8,7 +8,7 @@ var Group = sequelize.define('Group',
         allowNull: false,
         unique: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1
+        defaultValue: Sequelize.UUIDV4
     },
     role: {
         type: Sequelize.STRING,
@@ -18,19 +18,18 @@ var Group = sequelize.define('Group',
     freezeTableName: true
 });
 
-User.belongsToMany(Group, { through: 'role' });
-// Group.belongsToMany(User);
-// User.hasOne(Group);
+Group.hasOne(User, { foreignKey: "group_id" });
 
-Group.sync({ force: true }).then(function() {
-    Group.upsert({ role: "admin"});
-    Group.upsert({ role: "manager"});
-    Group.upsert({ role: "storage"});
+Group.sync({ force: true }).then(function(group) {
+    group.upsert({ role: "admin"});
+    group.upsert({ role: "manager"});
+    group.upsert({ role: "storage"});
 });
-User.sync({ force: true }).then(function() {
-    User.upsert({ username: "admin", password: "foo"});
-    User.upsert({ username: "petya", password: "foo"});
-    User.upsert({ username: "vasya", password: "foo"});
+
+User.sync({ force: true }).then(function(user) {
+    user.upsert({ username: "admin", password: "foo"});
+    user.upsert({ username: "petya", password: "foo"});
+    user.upsert({ username: "vasya", password: "foo"});
 });
 
 module.exports = Group;

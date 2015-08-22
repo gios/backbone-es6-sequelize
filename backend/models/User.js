@@ -7,7 +7,7 @@ var User = sequelize.define('User',
         allowNull: false,
         unique: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1
+        defaultValue: Sequelize.UUIDV4
     },
     username: {
         type: Sequelize.STRING,
