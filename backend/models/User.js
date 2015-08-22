@@ -2,7 +2,17 @@ var Sequelize = require('sequelize');
 
 var User = sequelize.define('User',
 {
-    username: { type: Sequelize.STRING, unique: true },
+    id: {
+        primaryKey: true,
+        allowNull: false,
+        unique: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1
+    },
+    username: {
+        type: Sequelize.STRING,
+        unique: true
+    },
     password: Sequelize.STRING
 }, {
     freezeTableName: true

@@ -3,21 +3,34 @@ var Sequelize = require('sequelize'),
 
 var Group = sequelize.define('Group',
 {
-    role: { type: Sequelize.STRING, unique: true }
+    id: {
+        primaryKey: true,
+        allowNull: false,
+        unique: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1
+    },
+    role: {
+        type: Sequelize.STRING,
+        unique: true
+    }
 }, {
     freezeTableName: true
 });
 
-Group.hasMany(User);
-// User.belongsTo(Group);
+User.belongsToMany(Group, { through: 'role' });
+// Group.belongsToMany(User);
+// User.hasOne(Group);
 
-Group.sync();
-User.sync();
-
-User.create({ username: "admin", password: "foo"});
-
-Group.create({ role: "admin"});
-Group.create({ role: "manager"});
-Group.create({ role: "storage"});
+Group.sync({ force: true }).then(function() {
+    Group.upsert({ role: "admin"});
+    Group.upsert({ role: "manager"});
+    Group.upsert({ role: "storage"});
+});
+User.sync({ force: true }).then(function() {
+    User.upsert({ username: "admin", password: "foo"});
+    User.upsert({ username: "petya", password: "foo"});
+    User.upsert({ username: "vasya", password: "foo"});
+});
 
 module.exports = Group;

@@ -8,9 +8,9 @@ var express = require("express"),
     session = require("express-session"),
     Sequelize = require('sequelize');
 
-global.sequelize = new Sequelize('intime', 'root', '0987654321', {
+global.sequelize = new Sequelize('intime', 'postgres', '0987654321', {
 	host: 'localhost',
-  	dialect: 'mysql',
+  	dialect: 'postgres',
 
   	pool: {
     	max: 5,
